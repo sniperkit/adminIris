@@ -2,6 +2,7 @@ package main
 
 import (
 	stdCtx "context"
+	"fmt"
 
 	"html/template"
 	"time"
@@ -28,6 +29,8 @@ func main() {
 
 	app.RegisterView(tmpl)
 	app.StaticWeb("/resources", "resources")
+
+	fmt.Println("main test")
 
 	appSpecialHandler(app)
 
