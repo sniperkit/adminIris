@@ -5,6 +5,8 @@ import "github.com/jinzhu/gorm"
 // Thread ...
 type Thread struct {
 	gorm.Model
+	Topic string
 	Name  string
-	Posts []Post
+
+	Threads []Thread
 }

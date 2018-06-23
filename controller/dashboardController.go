@@ -1,9 +1,10 @@
 package controller
 
 import (
+	"github.com/senseoki/adminIris/service"
+
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/mvc"
-	"github.com/senseoki/adminIris/service"
 )
 
 // DashBoardController ...

@@ -2,7 +2,6 @@ package main
 
 import (
 	stdCtx "context"
-	"fmt"
 
 	"html/template"
 	"time"
@@ -10,6 +9,7 @@ import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/pprof"
 	"github.com/kataras/iris/mvc"
+	"github.com/senseoki/adminIris/config"
 	"github.com/senseoki/adminIris/controller"
 	"github.com/senseoki/adminIris/middleware"
 	"github.com/senseoki/adminIris/service"
@@ -30,13 +30,12 @@ func main() {
 	app.RegisterView(tmpl)
 	app.StaticWeb("/resources", "resources")
 
-	fmt.Println("main test")
-
 	appSpecialHandler(app)
 
 	mvc.Configure(
 		app.Party("/adm",
 			middleware.NewRecover,
+			middleware.RDBTransaction,
 		), adm)
 
 	mvc.Configure(
@@ -82,9 +81,15 @@ func api(app *mvc.Application) {
 // 서버를 종료한다.
 func ShutDown(app *iris.Application) {
 	iris.RegisterOnInterrupt(func() {
+
 		timeout := 5 * time.Second
 		ctx, cancel := stdCtx.WithTimeout(stdCtx.Background(), timeout)
-		defer cancel()
+
+		defer func() {
+			cancel()
+			config.CF.Storage.RDB.Close()
+		}()
+
 		app.Shutdown(ctx) // close all hosts
 	})
 }

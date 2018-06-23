@@ -3,10 +3,11 @@ package controller
 import (
 	"fmt"
 
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/mvc"
 	"github.com/senseoki/adminIris/service"
 	"github.com/senseoki/adminIris/vo/home"
+
+	"github.com/kataras/iris"
+	"github.com/kataras/iris/mvc"
 )
 
 // HomeController ...
