@@ -2,8 +2,11 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-// PostComment ...
-type PostComment struct {
+// Board ...
+type Board struct {
 	gorm.Model
+	Title   string
 	Content string
+	writer  string
+	viewcnt uint
 }

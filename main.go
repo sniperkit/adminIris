@@ -11,6 +11,7 @@ import (
 	"github.com/kataras/iris/mvc"
 	"github.com/senseoki/adminIris/config"
 	"github.com/senseoki/adminIris/controller"
+	"github.com/senseoki/adminIris/dao"
 	"github.com/senseoki/adminIris/middleware"
 	"github.com/senseoki/adminIris/service"
 	"github.com/senseoki/adminIris/util"
@@ -35,13 +36,12 @@ func main() {
 	mvc.Configure(
 		app.Party("/adm",
 			middleware.NewRecover,
-			middleware.RDBTransaction,
 		), adm)
 
-	mvc.Configure(
-		app.Party("/api/v1",
-			middleware.NewRecover,
-		), api)
+	// mvc.Configure(
+	// 	app.Party("/api/v1",
+	// 		middleware.NewRecover,
+	// 	), api)
 
 	ShutDown(app)
 	app.Run(
@@ -66,16 +66,18 @@ func appSpecialHandler(app *iris.Application) {
 func adm(app *mvc.Application) {
 	app.Register(
 		service.NewDashBoardService(),
+		service.NewBoardService(dao.NewBoardDao()),
 	)
 	app.Handle(new(controller.DashBoardController))
+	app.Handle(new(controller.BoardController))
 }
 
-func api(app *mvc.Application) {
-	app.Register(
-		service.NewHomeService(),
-	)
-	app.Handle(new(controller.HomeController))
-}
+// func api(app *mvc.Application) {
+// 	app.Register(
+// 		service.NewHomeService(),
+// 	)
+// 	app.Handle(new(controller.HomeController))
+// }
 
 // ShutDown 함수는 서버 강제 종료시 유입된 request를 처리하고
 // 서버를 종료한다.

@@ -17,26 +17,20 @@ type Storage struct {
 // NewRDB ...
 func (s *Storage) NewRDB() {
 	var err error
-	s.RDB, _ = gorm.Open("mysql", "root:root@tcp(localhost:3306)/goteamDev?charset=utf8&parseTime=true&loc=Local")
-
+	s.RDB, err = gorm.Open("mysql", "root:root@tcp(localhost:3306)/goteamDev?charset=utf8&parseTime=true&loc=Local")
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	s.RDB.LogMode(true)
-
 	s.RDB.DB().SetMaxIdleConns(10)
 	s.RDB.DB().SetMaxOpenConns(100)
 
-	pingErr := s.RDB.DB().Ping()
-	if pingErr != nil {
-		log.Fatal(pingErr)
-	}
 	log.Println("RDB Connection Established")
 	s.migrate()
 }
 
 // Migrate ...
 func (s *Storage) migrate() {
-	s.RDB.AutoMigrate(&models.User{}, &models.Thread{}, &models.Post{}, &models.PostComment{}, &models.Channel{}, &models.Product{})
+	s.RDB.AutoMigrate(&models.Board{})
 }

@@ -1,36 +1,28 @@
 package middleware
 
 import (
-	"fmt"
-
-	"github.com/senseoki/adminIris/models"
-
 	"github.com/kataras/iris"
 	"github.com/senseoki/adminIris/config"
+	"github.com/senseoki/adminIris/util/log"
 )
 
 // RDBTransaction ...
 func RDBTransaction(ctx iris.Context) {
-	logger := ctx.Application().Logger()
 	tx := config.CF.Storage.RDB.Begin()
 	defer func() {
-		if r := recover(); r != nil {
+		if err := recover(); err != nil {
 			tx.Rollback()
-			logger.Info("[DBTransaction] Rollback() !!!")
+			CommonRecover(ctx, err)
+			log.MyLogger.Info("[DBTransaction] Rollback() !!!")
+		} else {
+			tx.Commit()
+			log.MyLogger.Info("[DBTransaction] Commit() !!!")
 		}
-		tx.Commit()
-		logger.Info("[DBTransaction] Commit() !!!")
 	}()
 
-	logger.Info("[DBTransaction] Begin() !!!")
+	log.MyLogger.Info("[DBTransaction] Begin() !!!")
 
-	ctx.Values().Set("DB", tx)
-
-	var product models.Product
-
-	tx.First(&product, 1)
-
-	fmt.Printf("%+v\n", product)
+	ctx.Values().Set("rdb", tx)
 
 	ctx.Next()
 }
