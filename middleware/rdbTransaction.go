@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/kataras/iris"
 	"github.com/senseoki/adminIris/config"
-	"github.com/senseoki/adminIris/util/log"
+	"github.com/senseoki/adminIris/util/mylog"
 )
 
 // RDBTransaction ...
@@ -13,14 +13,14 @@ func RDBTransaction(ctx iris.Context) {
 		if err := recover(); err != nil {
 			tx.Rollback()
 			CommonRecover(ctx, err)
-			log.MyLogger.Info("[DBTransaction] Rollback() !!!")
+			mylog.MyLogger.Info("[DBTransaction] Rollback() !!!")
 		} else {
 			tx.Commit()
-			log.MyLogger.Info("[DBTransaction] Commit() !!!")
+			mylog.MyLogger.Info("[DBTransaction] Commit() !!!")
 		}
 	}()
 
-	log.MyLogger.Info("[DBTransaction] Begin() !!!")
+	mylog.MyLogger.Info("[DBTransaction] Begin() !!!")
 
 	ctx.Values().Set("rdb", tx)
 

@@ -6,8 +6,7 @@ import (
 	"strconv"
 
 	"github.com/kataras/iris"
-
-	"github.com/senseoki/adminIris/util/log"
+	"github.com/senseoki/adminIris/util/mylog"
 )
 
 // NewRecover ..
@@ -46,7 +45,7 @@ func CommonRecover(ctx iris.Context, err interface{}) {
 	logMessage += fmt.Sprintf("\n================================ ERROR LOG END ================================\n\n")
 	//ctx.Application().Logger().Warn(logMessage)
 	//ctx.Application().Logger().Error(logMessage)
-	log.MyLogger.Error(logMessage)
+	mylog.MyLogger.Error(logMessage)
 
 	ctx.StatusCode(500)
 	ctx.StopExecution()

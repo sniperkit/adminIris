@@ -15,13 +15,18 @@ func NewBoardService(dao dao.BoardDao) BoardService {
 
 // BoardService ...
 type BoardService interface {
-	SelectList(vo *vo.BoardVO) []*models.Board
+	SelectList(vo *vo.Board) []*models.Board
+	Regist(vo *vo.Board)
 }
 
 type boardService struct {
 	dao dao.BoardDao
 }
 
-func (s *boardService) SelectList(vo *vo.BoardVO) []*models.Board {
+func (s *boardService) SelectList(vo *vo.Board) []*models.Board {
 	return s.dao.SelectList(vo)
+}
+
+func (s *boardService) Regist(vo *vo.Board) {
+	s.dao.Regist(vo)
 }

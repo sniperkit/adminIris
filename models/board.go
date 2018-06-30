@@ -5,8 +5,8 @@ import "github.com/jinzhu/gorm"
 // Board ...
 type Board struct {
 	gorm.Model
-	Title   string
-	Content string
-	writer  string
-	viewcnt uint
+	Title   string `form:"title"`
+	Content string `form:"content"`
+	Writer  string `form:"writer"`
+	Viewcnt uint   `form:"viewcnt"`
 }
