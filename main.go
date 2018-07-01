@@ -20,7 +20,8 @@ import (
 func main() {
 	app := iris.New()
 
-	tmpl := iris.HTML("./view", ".html").Delims("[[", "]]")
+	//tmpl := iris.HTML("./view", ".html").Delims("[[", "]]")
+	tmpl := iris.HTML("./view", ".html")
 	tmpl.AddFunc("CSS", func(tags []string) template.HTML {
 		return util.TemplateFuncCSSAndJavascript(tags, "css")
 	})

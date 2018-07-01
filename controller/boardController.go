@@ -30,12 +30,27 @@ func (c *BoardController) BeforeActivation(b mvc.BeforeActivation) {
 }
 
 // List ...
-func (c *BoardController) List() {
+func (c *BoardController) List() mvc.Result {
 	board := &vo.Board{
 		RDB: c.Ctx.Values().Get("rdb").(*gorm.DB),
 	}
 	boards := c.BoardService.SelectList(board)
 	mylog.MyLogger.Infof("BoardList : %+v\n", boards)
+
+	return mvc.View{
+		Layout: "layout/default.layout.html",
+		Name:   "layout/default.yield.html",
+		Data: iris.Map{
+			"header":  "header/default.header.html",
+			"sidebar": "menu/default.sidebar.html",
+			"content": "board/list.html",
+			"footer":  "footer/default.footer.html",
+			"js": []string{
+				"pages/board/list.js",
+			},
+			"BoardList": boards,
+		},
+	}
 }
 
 // RegisterPage ...
